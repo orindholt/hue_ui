@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-roboto font-light;
+  }
+}
+
+@layer components {
+  .slider {
+    @apply w-full outline-none bg-darkGray appearance-none mx-4 h-[1px] 
+  }
+  
+  .slider::-webkit-slider-thumb {
+      @apply appearance-none bg-white w-4 h-4 rounded-full shadow-md cursor-grab active:cursor-grabbing;
+  }
+}
