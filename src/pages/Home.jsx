@@ -6,16 +6,25 @@ const Home = () => {
 	const { data: bulbData, err } = useHueApi({ group: true });
 
 	return bulbData ? (
-		<div>
-			<h1 className="text-center font-black text-4xl">Hue Dashboard</h1>
-			<h2 className="text-center font-semibold text-2xl">Home</h2>
-			<ul className="m-10 grid grid-cols-2 gap-4">
+		<>
+			<h1 className="text-left font-semibold text-2xl">Home</h1>
+			<h2>All rooms</h2>
+			<ul className="grid grid-cols-3 gap-4 my-2">
 				{Object.values(bulbData).map((room, i) => {
-					const { name, lights, type } = room;
-					return <RoomBox name={name} lights={lights} type={type} key={i} />;
+					room.id = Object.keys(bulbData)[i];
+					const { class: name, name: altName, lights, type, id } = room;
+					return (
+						<RoomBox
+							name={name ? name : altName}
+							lights={lights}
+							type={type}
+							id={id}
+							key={i}
+						/>
+					);
 				})}
 			</ul>
-		</div>
+		</>
 	) : (
 		<Loader errState={err} />
 	);

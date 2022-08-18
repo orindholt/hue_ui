@@ -5,8 +5,9 @@ import useHueApi from "../hooks/useHueApi";
 import { motion as m } from "framer-motion";
 import { useEffect, useState } from "react";
 import checkContrast from "../util/checkContrast";
+import LightBulb from "./LightBulb";
 
-const RoomLink = ({ light }) => {
+const LightLink = ({ light }) => {
 	const [color, setColor] = useState("#ffffff");
 	const { data: bulbData } = useHueApi({ method: "GET", id: light });
 
@@ -14,9 +15,9 @@ const RoomLink = ({ light }) => {
 		if (bulbData && bulbData.state && bulbData.state.xy && bulbData.state.bri) {
 			const { xy, bri } = bulbData.state;
 			let rgbColor = xyBriToRgb(xy[0], xy[1], bri);
-			if (rgbColor.r > 256) rgbColor.r = 256;
-			if (rgbColor.g > 256) rgbColor.g = 256;
-			if (rgbColor.b > 256) rgbColor.b = 256;
+			if (rgbColor.r > 255) rgbColor.r = 255;
+			if (rgbColor.g > 255) rgbColor.g = 255;
+			if (rgbColor.b > 255) rgbColor.b = 255;
 			let hexColor = rgbHex(rgbColor.r, rgbColor.g, rgbColor.b);
 			setColor(`#${hexColor}`);
 		}
@@ -24,19 +25,20 @@ const RoomLink = ({ light }) => {
 
 	return (
 		bulbData && (
-			<m.div
+			<m.li
 				initial={{ y: -10, opacity: 0 }}
 				animate={{ y: 0, opacity: 1 }}
-				className="bg-black text-white rounded-md font-medium px-2 transition-colors border border-white border-solid shadow-sm"
-				style={{
-					backgroundColor: color,
-					color: checkContrast(color) ? "#000" : "#fff",
-				}}
+				className="bg-white text-black border-2 border-solid border-black rounded-md font-medium px-2 py-1 transition-colors shadow-sm"
 			>
-				<Link to={`detail/${light}`}>{bulbData.name}</Link>
-			</m.div>
+				<Link to={`light/${light}`}>
+					<div className="flex gap-1">
+						<LightBulb color={bulbData.state.on ? color : "#000"} size="30px" />
+						<h4 className="text-xl my-auto">{bulbData.name}</h4>
+					</div>
+				</Link>
+			</m.li>
 		)
 	);
 };
 
-export default RoomLink;
+export default LightLink;

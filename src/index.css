@@ -6,13 +6,13 @@
 
 @layer base {
   body {
-    @apply font-roboto font-light;
+    @apply bg-gray-200 font-roboto font-light;
   }
 }
 
 @layer components {
   .slider {
-    @apply w-full outline-none bg-darkGray appearance-none mx-4 h-[1px] 
+    @apply w-48 outline-none bg-darkGray appearance-none h-[1px] 
   }
   
   .slider::-webkit-slider-thumb {

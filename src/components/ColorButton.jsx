@@ -2,12 +2,9 @@ import useHueApi from "../hooks/useHueApi";
 import hexRgb from "hex-rgb";
 import ColorConverter from "cie-rgb-color-converter";
 
-const ColorButton = ({ hex, id }) => {
+const ColorButton = ({ hex, config = {} }) => {
 	const { callback: apiCallback } = useHueApi({
-		group: false,
-		method: "PUT",
-		id,
-		endpoint: "state",
+		...config,
 	});
 
 	const changeBulbColor = () => {
@@ -21,7 +18,7 @@ const ColorButton = ({ hex, id }) => {
 			onClick={changeBulbColor}
 			type="button"
 			style={{ backgroundColor: hex }}
-			className="w-16 aspect-square bg-white shadow-sm rounded-full"
+			className="w-16 aspect-square bg-white shadow-[0px_0px_10px_#00000010] rounded-full"
 		></button>
 	);
 };

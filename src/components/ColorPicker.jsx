@@ -11,7 +11,6 @@ const ColorPicker = ({ bulbXyBri, id }) => {
 		group: false,
 		method: "PUT",
 		id,
-		endpoint: "state",
 	});
 	const colorInputRef = useRef(null);
 	const defaultColorRgb = xyBriToRgb(

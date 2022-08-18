@@ -1,18 +1,17 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Detail from "./pages/Detail";
-import { useEffect } from "react";
-import axios from "axios";
+import { BrowserRouter as Router } from "react-router-dom";
+import MainRouter from "./components/MainRouter";
+import ColorContextProvider from "./util/ColorContext";
 
 const App = () => {
 	return (
 		<div className="App flex flex-col py-10">
-			<Router>
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/detail/:id" element={<Detail />} />
-				</Routes>
-			</Router>
+			<ColorContextProvider>
+				<Router>
+					<main className="px-10 py-4">
+						<MainRouter />
+					</main>
+				</Router>
+			</ColorContextProvider>
 		</div>
 	);
 };

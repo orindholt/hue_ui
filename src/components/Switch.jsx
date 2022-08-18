@@ -3,12 +3,11 @@ import { useState } from "react";
 import useHueApi from "../hooks/useHueApi";
 import { motion as m } from "framer-motion";
 
-const Switch = ({ bulbState, id }) => {
-	const [on, setOn] = useState(bulbState || false);
+const Switch = ({ bulbState, config = {} }) => {
+	console.log(bulbState);
+	const [on, setOn] = useState(bulbState);
 	const { callback: apiCallback } = useHueApi({
-		endpoint: "state",
-		id,
-		method: "PUT",
+		...config,
 	});
 
 	useEffect(() => {

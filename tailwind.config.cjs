@@ -8,6 +8,8 @@ module.exports = {
 			},
 			colors: {
 				darkGray: "#CECECE",
+				orange: "#fca903",
+				purple: "#7c2ee8",
 			},
 		},
 	},

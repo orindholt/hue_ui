@@ -2,12 +2,10 @@ import { useMemo, useRef } from "react";
 import { throttle } from "lodash";
 import useHueApi from "../hooks/useHueApi";
 
-const LightSlider = ({ bulbBrightness, id }) => {
+const LightSlider = ({ bulbBrightness, config = {} }) => {
 	const rangeInputRef = useRef(null);
 	const { callback: apiCallback } = useHueApi({
-		id,
-		endpoint: "state",
-		method: "PUT",
+		...config,
 	});
 
 	const changeBulbBrightness = () => {

@@ -4,12 +4,7 @@ import { useState } from "react";
 
 const userKey = "APr1gUkAyo6q0Xi4xfd9FHv2eZUPU2rLV0n50SOB";
 
-const useHueApi = ({
-	group = false,
-	id = "",
-	endpoint = "",
-	method = "GET",
-}) => {
+const useHueApi = ({ group = false, id = "", method = "GET" }) => {
 	const [data, setData] = useState(null);
 	const [err, setErr] = useState(null);
 	const [ipErr, setIpErr] = useState(null);
@@ -37,13 +32,21 @@ const useHueApi = ({
 			method,
 			url: `http://${localIp}/api/${userKey}/${group ? "groups" : "lights"}${
 				id ? "/" + id : ""
-			}/${endpoint}`,
+			}/${
+				group && method.toUpperCase() === "PUT"
+					? "action"
+					: !group && method.toUpperCase() === "PUT"
+					? "state"
+					: ""
+			}`,
 			data: body || null,
 		})
 			.then(res => {
 				if (res.data[0] && res.data[0].error) {
+					console.log(res.data[0].error.description);
 					throw { message: res.data[0].error.description };
 				}
+				console.log(res);
 				setData(res.data);
 			})
 			.catch(error => {
@@ -54,10 +57,11 @@ const useHueApi = ({
 	useEffect(() => {
 		if (!localStorage.getItem("localIp") || ipErr) {
 			getLocalIp();
-		} else if (localStorage.getItem("localIp") && !ipErr) {
+		} else if (localStorage.getItem("localIp") && !ipErr && method === "GET") {
+			console.log(method);
 			callback();
 		}
-	}, [endpoint, method, group, id, ipErr]);
+	}, [method, group, id, ipErr]);
 
 	return { data, err, callback };
 };
