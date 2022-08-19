@@ -46,7 +46,6 @@ const useHueApi = ({ group = false, id = "", method = "GET" }) => {
 					console.log(res.data[0].error.description);
 					throw { message: res.data[0].error.description };
 				}
-				console.log(res);
 				setData(res.data);
 			})
 			.catch(error => {
@@ -58,7 +57,6 @@ const useHueApi = ({ group = false, id = "", method = "GET" }) => {
 		if (!localStorage.getItem("localIp") || ipErr) {
 			getLocalIp();
 		} else if (localStorage.getItem("localIp") && !ipErr && method === "GET") {
-			console.log(method);
 			callback();
 		}
 	}, [method, group, id, ipErr]);

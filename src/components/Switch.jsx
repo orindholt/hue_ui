@@ -1,17 +1,21 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 import useHueApi from "../hooks/useHueApi";
 import { motion as m } from "framer-motion";
+import { colorContext } from "../util/ColorContext";
 
-const Switch = ({ bulbState, config = {} }) => {
-	console.log(bulbState);
-	const [on, setOn] = useState(bulbState);
+const Switch = ({ bulbStateDefault, config = {} }) => {
+	const [on, setOn] = useState(bulbStateDefault);
 	const { callback: apiCallback } = useHueApi({
 		...config,
 	});
+	const {
+		bulbState: { set: setBulbState },
+	} = useContext(colorContext);
 
 	useEffect(() => {
 		apiCallback({ on: on });
+		setBulbState(on);
 	}, [on]);
 
 	return (

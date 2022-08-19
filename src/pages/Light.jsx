@@ -5,39 +5,58 @@ import LightSlider from "../components/LightSlider";
 import { useParams } from "react-router-dom";
 import { motion as m } from "framer-motion";
 import ColorChooser from "../components/ColorChooser";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import LightBulb from "../components/LightBulb";
+import xyToHex from "../util/xyToHex";
+import { colorContext } from "../util/ColorContext";
 
 const Light = () => {
 	const { id } = useParams();
 	const { data: bulbData, err } = useHueApi({ id });
 
-	const [bulbState, setBulbState] = useState(null);
-	const [bulbBri, setBulbBri] = useState(null);
-	/* const [bulbColor, setBulbColor] = useState(null); */
+	const {
+		bulbState: { get: bulbState, set: setBulbState },
+		bulbBri: { get: bulbBri, set: setBulbBri },
+		bulbColor: { get: bulbColor, set: setBulbColor },
+	} = useContext(colorContext);
 
 	useEffect(() => {
-		setBulbState(bulbData.state.on);
-		setBulbBri(bulbData.state.bri);
-		/* setBulbColor(bulbData.state.xy) */
-	}, []);
+		if (bulbData) {
+			const { on, xy, bri } = bulbData.state;
+			setBulbState(on);
+			setBulbBri(bri);
+			setBulbColor(xyToHex(xy, bri));
+		}
+	}, [bulbData]);
 
 	return (
 		<>
-			{bulbData ? (
+			{bulbData && bulbState !== null ? (
 				<m.div
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					className="bg-white rounded-md shadow-sm py-4"
 				>
+					<div className="flex justify-center mb-4">
+						<LightBulb
+							size="200px"
+							state={bulbState}
+							color={bulbColor}
+							bri={bulbBri}
+						/>
+					</div>
 					<h2 className="text-center font-medium text-4xl mb-4">
 						{bulbData.name}
 					</h2>
 					<div className="pb-4 justify-center flex">
-						<Switch bulbState={bulbState} config={{ id, method: "PUT" }} />
+						<Switch
+							bulbStateDefault={bulbData.state.on}
+							config={{ id, method: "PUT" }}
+						/>
 					</div>
 					<div className="flex items-stretch justify-center gap-4">
 						<LightSlider
-							bulbBrightness={bulbBri}
+							bulbBriDefault={bulbData.state.bri}
 							config={{ id, method: "PUT" }}
 						/>
 					</div>

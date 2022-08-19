@@ -14,7 +14,9 @@ const RoomBox = ({ name, type, id, lights }) => {
 			>
 				<h3 className="text-2xl font-medium">{name}</h3>
 				<h4>Type: {type}</h4>
-				<p className="text-orange font-medium">Lights: {lights.length}</p>
+				<p className="text-orange font-medium">
+					Light{lights.length > 1 && "s"}: {lights.length}
+				</p>
 			</m.li>
 		</Link>
 	);

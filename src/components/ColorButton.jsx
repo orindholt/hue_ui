@@ -1,16 +1,20 @@
+import { useContext } from "react";
 import useHueApi from "../hooks/useHueApi";
-import hexRgb from "hex-rgb";
-import ColorConverter from "cie-rgb-color-converter";
+import { colorContext } from "../util/ColorContext";
+import hexToXy from "../util/hexToXy";
 
 const ColorButton = ({ hex, config = {} }) => {
 	const { callback: apiCallback } = useHueApi({
 		...config,
 	});
+	const {
+		bulbColor: { set: setBulbColor },
+	} = useContext(colorContext);
 
 	const changeBulbColor = () => {
-		const { red: r, green: g, blue: b } = hexRgb(hex);
-		let xy = ColorConverter.rgbToXy(r, g, b);
-		apiCallback({ xy: [xy.x, xy.y] });
+		let { x, y } = hexToXy(hex);
+		apiCallback({ xy: [x, y] });
+		setBulbColor(hex);
 	};
 
 	return (

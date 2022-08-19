@@ -5,6 +5,7 @@ import { useRef, useMemo } from "react";
 import { xyBriToRgb } from "cie-rgb-color-converter";
 import { throttle } from "lodash";
 import useHueApi from "../hooks/useHueApi";
+import hexToXy from "../util/hexToXy";
 
 const ColorPicker = ({ bulbXyBri, id }) => {
 	const { callback: apiCallback } = useHueApi({
@@ -20,10 +21,9 @@ const ColorPicker = ({ bulbXyBri, id }) => {
 	);
 
 	const changeBulbColor = () => {
-		const color = colorInputRef.current.value;
-		const { red: r, green: g, blue: b } = hexRgb(color);
-		let xy = ColorConverter.rgbToXy(r, g, b);
-		apiCallback({ xy: [xy.x, xy.y] });
+		const hexColor = colorInputRef.current.value;
+		let { x, y } = hexToXy(hexColor);
+		apiCallback({ xy: [x, y] });
 	};
 
 	const throttledEventHandler = useMemo(() => {

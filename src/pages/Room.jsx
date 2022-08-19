@@ -37,7 +37,7 @@ const Room = () => {
 				<div className="mt-4">
 					<div className="pb-4 justify-center flex">
 						<Switch
-							bulbState={bulbData.action.on}
+							bulbStateDefault={bulbData.action.on}
 							config={{
 								id,
 								method: "PUT",
@@ -47,7 +47,7 @@ const Room = () => {
 					</div>
 					<div className="flex items-stretch justify-center gap-4">
 						<LightSlider
-							bulbBrightness={bulbData.action.bri}
+							bulbBriDefault={bulbData.action.bri}
 							config={{ id, group: true, method: "PUT" }}
 						/>
 					</div>

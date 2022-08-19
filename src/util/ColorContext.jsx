@@ -11,11 +11,16 @@ const ColorContextProvider = ({ children }) => {
 		"#DE94EB",
 		"#EBD094",
 	]);
+	const [bulbState, setBulbState] = useState(null);
+	const [bulbBri, setBulbBri] = useState(null);
+	const [bulbColor, setBulbColor] = useState(null);
 	const contextValue = {
 		colorOptions: { get: colorOptions, set: setColorOptions },
+		bulbState: { get: bulbState, set: setBulbState },
+		bulbBri: { get: bulbBri, set: setBulbBri },
+		bulbColor: { get: bulbColor, set: setBulbColor },
 	};
 	useEffect(() => {
-		console.log(colorOptions);
 		localStorage.setItem("savedColors", JSON.stringify(colorOptions));
 	}, [colorOptions]);
 	return (
